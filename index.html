@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BYU Legend Multiverse</title>
+  <title>BYU Legend Multiverse – Modern Era</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* ==================== BASE & ERA THEMES ==================== */
@@ -263,6 +266,315 @@
     @media (max-width: 768px) {
       #main-grid { grid-template-columns: 1fr; }
     }
+
+    /* ==================== FONTS ==================== */
+    body { font-family: 'Inter', 'Segoe UI', sans-serif; }
+    h1,h2,h3,.header-title,.hud-label,.module-tab { font-family: 'Oswald', 'Arial', sans-serif; }
+
+    /* ==================== STADIUM BACKGROUND ==================== */
+    body { position: relative; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -2;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(0,98,184,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(255,215,0,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0,46,93,0.6) 0%, #000d1a 100%);
+      animation: stadium-ambient 8s ease-in-out infinite alternate;
+    }
+    @keyframes stadium-ambient {
+      0%   { opacity: 0.8; }
+      100% { opacity: 1.0; }
+    }
+    /* Stadium light beams */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        conic-gradient(from 200deg at 10% 0%, transparent 0deg, rgba(255,215,0,0.04) 5deg, transparent 10deg),
+        conic-gradient(from 340deg at 90% 0%, transparent 0deg, rgba(0,98,184,0.05) 5deg, transparent 10deg);
+      animation: light-sweep 12s linear infinite;
+    }
+    @keyframes light-sweep {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ==================== XP BAR & LEVEL ==================== */
+    #xp-bar-wrap { position: relative; }
+    #xp-bar-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, #0062B8, #FFD700, #FF6B00);
+      transition: width 0.6s cubic-bezier(0.25,0.8,0.25,1);
+    }
+    .level-badge {
+      font-family: 'Oswald', sans-serif;
+      background: linear-gradient(135deg, #FFD700, #FF8C00);
+      color: #000;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      box-shadow: 0 0 10px rgba(255,215,0,0.5);
+    }
+
+    /* ==================== PRESTIGE TAB ==================== */
+    .prestige-btn {
+      background: linear-gradient(135deg, #7a5c00, #FFD700 50%, #7a5c00);
+      color: #000;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(255,215,0,0.4);
+      transition: all 0.2s;
+    }
+    .prestige-btn:hover { transform: scale(1.04); box-shadow: 0 0 50px rgba(255,215,0,0.7); }
+    .prestige-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    /* ==================== SKILL TREE ==================== */
+    .skill-node {
+      background: rgba(255,255,255,0.04);
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      min-width: 120px;
+    }
+    .skill-node:hover:not(.locked-skill):not(.maxed-skill) {
+      border-color: var(--gold);
+      background: rgba(255,215,0,0.1);
+      transform: translateY(-2px);
+    }
+    .skill-node.unlocked-skill { border-color: #0062B8; background: rgba(0,98,184,0.2); }
+    .skill-node.maxed-skill { border-color: var(--gold); background: rgba(255,215,0,0.15); }
+    .skill-node.locked-skill { opacity: 0.35; cursor: not-allowed; }
+    .skill-branch-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .skill-connector {
+      width: 2px; height: 20px;
+      background: linear-gradient(180deg, rgba(255,215,0,0.4), rgba(0,98,184,0.4));
+      margin: 0 auto;
+    }
+
+    /* ==================== STATS PANEL ==================== */
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .stat-card:hover { border-color: rgba(0,98,184,0.5); background: rgba(0,98,184,0.1); }
+    .stat-value {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #FFD700;
+    }
+    .stat-label { font-size: 0.7rem; letter-spacing: 0.1em; color: #aaa; text-transform: uppercase; }
+
+    /* ==================== RANDOM EVENT OVERLAY ==================== */
+    #random-event-overlay {
+      position: fixed; inset: 0; z-index: 800;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      animation: event-fade-in 0.3s ease-out;
+    }
+    #random-event-overlay.active { display: flex; }
+    @keyframes event-fade-in {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .event-card {
+      background: linear-gradient(135deg, #001a3d 0%, #002E5D 50%, #001a3d 100%);
+      border: 2px solid var(--gold);
+      border-radius: 16px;
+      padding: 32px 40px;
+      text-align: center;
+      max-width: 420px;
+      box-shadow: 0 0 60px rgba(255,215,0,0.3), 0 20px 60px rgba(0,0,0,0.6);
+      animation: event-bounce 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes event-bounce {
+      0%   { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+
+    /* ==================== DAILY REWARD MODAL ==================== */
+    #daily-modal {
+      position: fixed; inset: 0; z-index: 900;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(6px);
+      display: none;
+    }
+    #daily-modal.active { display: flex; }
+    .daily-card {
+      background: linear-gradient(135deg, #001a3d 0%, #002E5D 100%);
+      border: 2px solid var(--gold);
+      border-radius: 20px;
+      padding: 36px 48px;
+      text-align: center;
+      max-width: 500px;
+      width: 90vw;
+      box-shadow: 0 0 80px rgba(255,215,0,0.3);
+    }
+    .daily-day-btn {
+      border-radius: 10px;
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 2px solid rgba(255,255,255,0.15);
+      transition: all 0.2s;
+    }
+    .daily-day-btn.claimed { background: rgba(255,215,0,0.2); border-color: var(--gold); color: var(--gold); }
+    .daily-day-btn.today { background: rgba(0,98,184,0.3); border-color: #0062B8; color: #fff; animation: today-pulse 1s ease-in-out infinite alternate; }
+    .daily-day-btn.future { opacity: 0.4; }
+    @keyframes today-pulse { from { box-shadow: none; } to { box-shadow: 0 0 15px rgba(0,98,184,0.7); } }
+
+    /* ==================== JERSEY RARITY CARDS ==================== */
+    .jersey-rarity-card {
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .jersey-rarity-card::before {
+      content: ''; position: absolute; inset: 0; opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .jersey-rarity-card:hover { transform: translateY(-4px); }
+    .jersey-rarity-card:hover::before { opacity: 1; }
+    .rarity-common   { border: 2px solid #888; }
+    .rarity-common::before { background: radial-gradient(circle at 50% 0%, rgba(136,136,136,0.15), transparent); }
+    .rarity-rare     { border: 2px solid #0062B8; }
+    .rarity-rare::before { background: radial-gradient(circle at 50% 0%, rgba(0,98,184,0.2), transparent); }
+    .rarity-legendary{ border: 2px solid #FFD700; box-shadow: 0 0 16px rgba(255,215,0,0.25); }
+    .rarity-legendary::before { background: radial-gradient(circle at 50% 0%, rgba(255,215,0,0.2), transparent); }
+    .rarity-mythic   { border: 2px solid #FF00FF; box-shadow: 0 0 20px rgba(255,0,255,0.3); animation: mythic-glow 2s ease-in-out infinite alternate; }
+    .rarity-mythic::before { background: radial-gradient(circle at 50% 0%, rgba(255,0,255,0.2), transparent); }
+    @keyframes mythic-glow {
+      from { box-shadow: 0 0 16px rgba(255,0,255,0.3); }
+      to   { box-shadow: 0 0 40px rgba(255,0,255,0.7), 0 0 80px rgba(180,0,255,0.4); }
+    }
+    .rarity-badge {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .badge-common    { background: #555; color: #ddd; }
+    .badge-rare      { background: #0062B8; color: #fff; }
+    .badge-legendary { background: linear-gradient(90deg,#7a5c00,#FFD700,#7a5c00); color: #000; }
+    .badge-mythic    { background: linear-gradient(90deg,#800080,#FF00FF,#800080); color: #fff; }
+
+    /* ==================== UPGRADE TIER STYLES ==================== */
+    .upgrade-card.tier-2 { border-color: rgba(0,98,184,0.5); }
+    .upgrade-card.tier-3 { border-color: rgba(255,215,0,0.4); }
+    .upgrade-card.tier-legend { border-color: rgba(255,0,255,0.5); background: rgba(255,0,255,0.05); }
+
+    /* ==================== ACHIEVEMENT CATEGORY ==================== */
+    .achievement-category {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .cat-scoring    { background: rgba(255,100,0,0.3); color: #FF8C00; }
+    .cat-collecting { background: rgba(0,98,184,0.3); color: #60A5FA; }
+    .cat-loyalty    { background: rgba(255,215,0,0.2); color: #FFD700; }
+    .cat-speed      { background: rgba(0,200,100,0.2); color: #4ADE80; }
+    .cat-hidden     { background: rgba(128,0,128,0.3); color: #C084FC; }
+
+    /* ==================== SHARE BUTTON ==================== */
+    .share-btn {
+      background: linear-gradient(135deg, #0062B8, #004080);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .share-btn:hover { background: linear-gradient(135deg, #0072D8, #0062B8); box-shadow: 0 4px 20px rgba(0,98,184,0.5); }
+
+    /* ==================== EXPORT/IMPORT ==================== */
+    .save-action-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #ccc;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .save-action-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+    /* ==================== PROGRESS RINGS ==================== */
+    .progress-ring-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+    .progress-ring-label { position: absolute; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 0.95rem; color: #FFD700; }
+
+    /* ==================== GLOW BUTTON HOVER ==================== */
+    .upgrade-card:hover:not(.locked) {
+      box-shadow: 0 0 20px rgba(0,98,184,0.4);
+      transform: translateX(2px);
+    }
+    .upgrade-card { transition: all 0.18s ease; }
+
+    /* ==================== PRESTIGE GLOW RING ==================== */
+    .prestige-count-ring {
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 3px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--gold);
+      box-shadow: 0 0 20px rgba(255,215,0,0.4);
+    }
+
+    /* ==================== MOBILE IMPROVEMENTS ==================== */
+    @media (max-width: 768px) {
+      #main-grid { grid-template-columns: 1fr; }
+      .module-tab { padding: 10px 12px; font-size: 0.7rem; }
+      .event-card { padding: 24px 20px; }
+      .daily-card { padding: 24px 20px; }
+    }
+    @media (max-width: 480px) {
+      .module-tab span.tab-text { display: none; }
+    }
   </style>
 </head>
 <body class="era-modern">
@@ -270,18 +582,57 @@
 <!-- FRENZY OVERLAY -->
 <div id="frenzy-overlay"></div>
 
+<!-- RANDOM EVENT OVERLAY -->
+<div id="random-event-overlay">
+  <div class="event-card">
+    <div id="event-icon" class="text-6xl mb-4">⚡</div>
+    <h2 id="event-title" class="text-2xl font-black text-yellow-400 mb-2" style="font-family:Oswald,sans-serif;">EVENT!</h2>
+    <p id="event-desc" class="text-gray-300 text-sm mb-6">Get ready!</p>
+    <button onclick="claimEvent()" class="prestige-btn w-full">⚡ CLAIM REWARD!</button>
+  </div>
+</div>
+
+<!-- DAILY REWARD MODAL -->
+<div id="daily-modal">
+  <div class="daily-card">
+    <div class="text-5xl mb-3">🎁</div>
+    <h2 class="text-2xl font-black text-yellow-400 mb-1" style="font-family:Oswald,sans-serif;">DAILY REWARD</h2>
+    <p class="text-gray-400 text-sm mb-6">Come back every day to build your streak!</p>
+    <div class="grid grid-cols-7 gap-2 mb-6" id="daily-days-grid"></div>
+    <div id="daily-reward-desc" class="text-center text-white font-bold text-lg mb-6"></div>
+    <button id="daily-claim-btn" onclick="claimDailyReward()" class="prestige-btn w-full">🎁 CLAIM TODAY'S REWARD</button>
+    <button onclick="closeDailyModal()" class="mt-3 w-full text-xs text-gray-500 hover:text-gray-300 transition py-2">Close</button>
+  </div>
+</div>
+
 <!-- ==================== JUMBOTRON HUD ==================== -->
 <header id="jumbotron-header">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-center justify-between mb-2">
-      <div class="flex items-center gap-3">
-        <span class="text-3xl font-black tracking-wider text-white">⚡ BYU LEGEND MULTIVERSE</span>
+      <div class="flex items-center gap-3 flex-wrap">
+        <span class="text-3xl font-black tracking-wider text-white header-title">⚡ BYU LEGEND MULTIVERSE</span>
         <span id="era-badge" class="text-xs bg-yellow-500 text-black px-2 py-1 rounded-full font-bold">MODERN ERA</span>
+        <span id="level-badge" class="level-badge">LVL 1</span>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 flex-wrap justify-end">
         <button id="cosmo-btn" title="Cosmo the Cougar" onclick="triggerCosmoStunt()">🐾</button>
+        <button onclick="showDailyModal()" class="text-xs bg-purple-800 hover:bg-purple-700 px-3 py-1 rounded text-white transition">🎁 Daily</button>
         <button onclick="saveGame()" class="text-xs bg-green-700 hover:bg-green-600 px-3 py-1 rounded text-white transition">💾 Save</button>
+        <button onclick="exportSave()" class="save-action-btn">📤 Export</button>
+        <button onclick="importSave()" class="save-action-btn">📥 Import</button>
+        <button onclick="shareScore()" class="share-btn">🔗 Share</button>
         <button onclick="resetGame()" class="text-xs bg-red-900 hover:bg-red-700 px-3 py-1 rounded text-white transition">🔄 Reset</button>
+      </div>
+    </div>
+
+    <!-- XP BAR -->
+    <div class="mb-2" id="xp-bar-wrap">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-xs text-gray-400" id="xp-label">XP: 0 / 100</span>
+        <span class="text-xs text-yellow-400" id="level-unlock-hint"></span>
+      </div>
+      <div class="progress-bar" style="height:8px;">
+        <div id="xp-bar-fill" style="width:0%;"></div>
       </div>
     </div>
 
@@ -304,8 +655,8 @@
         <span class="scoreboard-digit" id="hud-bb">1.00</span>
       </div>
       <div>
-        <div class="hud-label">Shoot Streak</div>
-        <span class="scoreboard-digit" id="hud-streak">0</span>
+        <div class="hud-label">Prestige Count</div>
+        <span class="scoreboard-digit" id="hud-prestige">0</span>
       </div>
       <div>
         <div class="hud-label">Total Clicks</div>
@@ -324,12 +675,14 @@
 </header>
 
 <!-- ==================== MODULE TABS ==================== -->
-<div class="bg-gray-900 border-b border-gray-700 sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto flex gap-0">
-    <button class="module-tab active px-6 py-3 font-bold text-sm" data-tab="jersey" onclick="switchModule('jersey')">🏷️ JERSEY VAULT</button>
-    <button class="module-tab px-6 py-3 font-bold text-sm" data-tab="basketball" onclick="switchModule('basketball')">🏀 MARRIOTT CENTER</button>
-    <button class="module-tab px-6 py-3 font-bold text-sm" data-tab="legends" onclick="switchModule('legends')">📖 LEGEND DATABASE</button>
-    <button class="module-tab px-6 py-3 font-bold text-sm" data-tab="gallery" onclick="switchModule('gallery')">🔢 RETIRED NUMBERS</button>
+<div class="bg-gray-900 border-b border-gray-700 sticky top-0 z-50 overflow-x-auto">
+  <div class="max-w-7xl mx-auto flex gap-0 min-w-max">
+    <button class="module-tab active px-5 py-3 font-bold text-sm" data-tab="jersey" onclick="switchModule('jersey')">🏷️ <span class="tab-text">JERSEY VAULT</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="basketball" onclick="switchModule('basketball')">🏀 <span class="tab-text">MARRIOTT CENTER</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="legends" onclick="switchModule('legends')">📖 <span class="tab-text">LEGEND DATABASE</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="gallery" onclick="switchModule('gallery')">🔢 <span class="tab-text">RETIRED NUMBERS</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="prestige" onclick="switchModule('prestige')">🏆 <span class="tab-text">PRESTIGE</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="stats" onclick="switchModule('stats')">📊 <span class="tab-text">STATS</span></button>
   </div>
 </div>
 
@@ -356,8 +709,20 @@
       <!-- UPGRADES PANEL -->
       <div class="flex flex-col gap-3">
         <h3 class="text-lg font-bold text-yellow-400">⬆️ UPGRADES</h3>
+        <div class="flex gap-2 mb-1">
+          <button onclick="setUpgradeTierFilter('all')" id="filter-all" class="text-xs px-3 py-1 rounded bg-blue-800 text-white transition hover:bg-blue-700">All</button>
+          <button onclick="setUpgradeTierFilter(1)" id="filter-t1" class="text-xs px-3 py-1 rounded bg-gray-700 text-gray-300 transition hover:bg-gray-600">Tier 1</button>
+          <button onclick="setUpgradeTierFilter(2)" id="filter-t2" class="text-xs px-3 py-1 rounded bg-gray-700 text-gray-300 transition hover:bg-gray-600">Tier 2</button>
+          <button onclick="setUpgradeTierFilter(3)" id="filter-t3" class="text-xs px-3 py-1 rounded bg-gray-700 text-gray-300 transition hover:bg-gray-600">Legends</button>
+        </div>
         <div id="upgrades-list" class="flex flex-col gap-2 overflow-y-auto max-h-96"></div>
         <h3 class="text-lg font-bold text-yellow-400 mt-4">🏆 ACHIEVEMENTS</h3>
+        <div class="flex gap-2 mb-1 flex-wrap">
+          <button onclick="setAchievementFilter('all')" id="ach-filter-all" class="text-xs px-2 py-1 rounded bg-blue-800 text-white">All</button>
+          <button onclick="setAchievementFilter('scoring')" class="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300">Scoring</button>
+          <button onclick="setAchievementFilter('collecting')" class="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300">Collecting</button>
+          <button onclick="setAchievementFilter('loyalty')" class="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300">Loyalty</button>
+        </div>
         <div id="achievements-list" class="flex flex-col gap-2 overflow-y-auto max-h-48"></div>
       </div>
     </div>
@@ -408,6 +773,77 @@
       <h2 class="text-2xl font-black text-yellow-400 tracking-wider mb-4">🔢 RETIRED NUMBERS</h2>
       <p class="text-gray-400 text-sm mb-6">BYU Athletics Retired Numbers – A Legacy in Every Digit.</p>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="gallery-grid"></div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 5: PRESTIGE ===== -->
+  <div id="tab-prestige" class="tab-content hidden">
+    <div class="mt-4">
+      <h2 class="text-2xl font-black text-yellow-400 tracking-wider mb-2">🏆 PRESTIGE – REBUILD THE PROGRAM</h2>
+      <p class="text-gray-400 text-sm mb-6">Reset your progress and earn a permanent Legacy Multiplier. Each prestige makes you stronger forever.</p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Prestige Main Panel -->
+        <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="prestige-count-ring" id="prestige-ring">0</div>
+            <div>
+              <div class="text-lg font-black text-white">Prestige Count</div>
+              <div class="text-sm text-gray-400">Each prestige awards Legacy Shards and a permanent multiplier boost.</div>
+            </div>
+          </div>
+          <div class="space-y-3 mb-6">
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Current Legacy Multiplier</span>
+              <span class="text-yellow-400 font-bold" id="legacy-mult-display">1.00×</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Shards Earned On Prestige</span>
+              <span class="text-purple-400 font-bold" id="prestige-shards-preview">—</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-400">Requirement</span>
+              <span class="text-blue-400 font-bold">50,000 CP total earned</span>
+            </div>
+            <div class="progress-bar mt-2">
+              <div id="prestige-progress-fill" class="progress-fill" style="width:0%;"></div>
+            </div>
+            <div class="text-xs text-gray-500 text-right" id="prestige-progress-label">0 / 50,000 CP</div>
+          </div>
+          <button id="prestige-btn" class="prestige-btn w-full" onclick="doPrestige()" disabled>
+            🏆 REBUILD THE PROGRAM
+          </button>
+          <p class="text-xs text-gray-500 text-center mt-3">This resets Cougar Points, upgrades, and click power.<br>Legacy Shards, Prestige count, and Legend Database persist.</p>
+        </div>
+
+        <!-- Skill Tree -->
+        <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+          <h3 class="text-xl font-black text-yellow-400 mb-1" style="font-family:Oswald,sans-serif;">🌳 SKILL TREE</h3>
+          <p class="text-xs text-gray-500 mb-4">Spend Legacy Shards to unlock permanent abilities. Legacy Shards: <span class="text-purple-400 font-bold" id="skill-shards-display">0</span></p>
+          <div class="grid grid-cols-3 gap-3" id="skill-tree-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 6: STATS ===== -->
+  <div id="tab-stats" class="tab-content hidden">
+    <div class="mt-4">
+      <h2 class="text-2xl font-black text-yellow-400 tracking-wider mb-6">📊 STATISTICS</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8" id="stats-grid"></div>
+
+      <!-- CPS Breakdown -->
+      <div class="bg-gray-900 rounded-xl p-6 border border-gray-700 mb-6">
+        <h3 class="text-lg font-bold text-yellow-400 mb-4">⚙️ INCOME BREAKDOWN</h3>
+        <div id="cps-breakdown" class="space-y-2 text-sm"></div>
+      </div>
+
+      <!-- Trophy Case -->
+      <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+        <h3 class="text-lg font-bold text-yellow-400 mb-4">🏆 TROPHY CASE</h3>
+        <p class="text-xs text-gray-500 mb-4">Achievements earned throughout your journey.</p>
+        <div id="trophy-case-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      </div>
     </div>
   </div>
 
@@ -464,10 +900,12 @@ function playCougarRoar() {
 // ==================== GLOBAL STATE ====================
 class GlobalState {
   constructor() {
-    this.activeLegend = null;       // string key
-    this.unlockedGear = [];         // array of string IDs
-    this.shootingStreak = 0;        // integer
-    this.historicalEra = 'modern';  // '1950s' | '1984' | 'modern'
+    this.activeLegend = null;
+    this.unlockedGear = [];
+    this.shootingStreak = 0;
+    this.historicalEra = 'modern';
+    this.activeEvent = null;
+    this.eventEndTime = 0;
   }
 }
 
@@ -478,18 +916,41 @@ class Player {
     this.legacyShards = 0;
     this.blueBloodMultiplier = 1.0;
     this.totalClicks = 0;
-    this.cps = 0;                   // cougar points per second (from upgrades)
+    this.cps = 0;
     this.clickPower = 1;
-    this.inventory = [];            // upgrade IDs purchased
-    this.achievements = [];         // achievement IDs earned
+    this.inventory = [];
+    this.achievements = [];
     this.frenzyActive = false;
     this.frenzyTimeRemaining = 0;
     this.frenzyTriggered = 0;
     this.cosmoMultiplier = 1;
     this.heismanActive = false;
-    this.basketball = {
-      made: 0, missed: 0, streak: 0, shardsEarned: 0
-    };
+    this.basketball = { made: 0, missed: 0, streak: 0, shardsEarned: 0 };
+    // New fields
+    this.lifetimeCP = 0;
+    this.lifetimeShards = 0;
+    this.prestigeCount = 0;
+    this.legacyMultiplier = 1.0;
+    this.totalUpgradesBought = 0;
+    this.legendsActivated = 0;
+    this.legendsActivatedSet = [];
+    this.dailyStreak = 0;
+    this.lastDailyDate = null;
+    this.dailyClaimed = [];
+    this.cosmoStunts = 0;
+    this.eventsClaimed = 0;
+    this.critChanceBonus = 0;
+    this.frenzyDurationBonus = 0;
+    this.legendMultBonus = 0;
+    this.shardBonus = 0;
+    this.eventFreqBonus = 0;
+    this.streakMult = 1;
+    this.dailyMult = 1;
+    this.prestigeShardsBonus = 0;
+    this.autoFarmMult = 1;
+    this.skillsUnlocked = [];
+    this.activeLegend = null;
+    this.timePlayed = 0;
   }
 }
 
@@ -499,24 +960,54 @@ function calcCost(baseCost, owned) {
 }
 
 const UPGRADES = [
-  { id: 'wool_jersey',      name: '🧶 Wool Jersey',       desc: '+1 CP/click',      baseCost: 15,   ownedKey: 'u_wool',   effect: p => { p.clickPower += 1; },   cpsBonus: 0 },
-  { id: 'mesh_jersey',      name: '🕸️ Mesh Jersey',       desc: '+3 CP/click',      baseCost: 80,   ownedKey: 'u_mesh',   effect: p => { p.clickPower += 3; },   cpsBonus: 0 },
-  { id: 'chrome_accents',   name: '✨ Chrome Accents',     desc: '+10 CP/click',     baseCost: 400,  ownedKey: 'u_chrome', effect: p => { p.clickPower += 10; },  cpsBonus: 0 },
-  { id: 'auto_fan',         name: '👥 Auto Fan Section',  desc: '+2 CP/sec',        baseCost: 50,   ownedKey: 'u_fan',    effect: p => { p.cps += 2; },          cpsBonus: 2 },
-  { id: 'marching_band',    name: '🎺 Marching Band',     desc: '+8 CP/sec',        baseCost: 200,  ownedKey: 'u_band',   effect: p => { p.cps += 8; },          cpsBonus: 8 },
-  { id: 'stadium_lights',   name: '💡 Stadium Lights',    desc: '+25 CP/sec',       baseCost: 800,  ownedKey: 'u_lights', effect: p => { p.cps += 25; },         cpsBonus: 25 },
-  { id: 'rivalry_trophy',   name: '🏆 Rivalry Trophy',    desc: '+0.1× BBM',        baseCost: 5000, ownedKey: 'u_trophy', effect: p => { p.blueBloodMultiplier += 0.1; }, cpsBonus: 0 },
+  // ===== TIER 1: Basic =====
+  { id: 'wool_jersey',    name: '🧶 Wool Jersey',       desc: '+1 CP/click',       baseCost: 15,    ownedKey: 'u_wool',    tier: 1, effect: p => { p.clickPower += 1; },    cpsBonus: 0  },
+  { id: 'mesh_jersey',    name: '🕸️ Mesh Jersey',       desc: '+3 CP/click',       baseCost: 80,    ownedKey: 'u_mesh',    tier: 1, effect: p => { p.clickPower += 3; },    cpsBonus: 0  },
+  { id: 'auto_fan',       name: '👥 Auto Fan Section',  desc: '+2 CP/sec',         baseCost: 50,    ownedKey: 'u_fan',     tier: 1, effect: p => { p.cps += 2; },           cpsBonus: 2  },
+  { id: 'marching_band',  name: '🎺 Marching Band',     desc: '+8 CP/sec',         baseCost: 200,   ownedKey: 'u_band',    tier: 1, effect: p => { p.cps += 8; },           cpsBonus: 8  },
+  // ===== TIER 2: Enhanced =====
+  { id: 'chrome_accents', name: '✨ Chrome Accents',    desc: '+10 CP/click',      baseCost: 400,   ownedKey: 'u_chrome',  tier: 2, effect: p => { p.clickPower += 10; },   cpsBonus: 0  },
+  { id: 'stadium_lights', name: '💡 Stadium Lights',    desc: '+25 CP/sec',        baseCost: 800,   ownedKey: 'u_lights',  tier: 2, effect: p => { p.cps += 25; },          cpsBonus: 25 },
+  { id: 'pep_band',       name: '🎸 Pep Band Turbo',   desc: '+50 CP/sec',        baseCost: 2500,  ownedKey: 'u_pep',     tier: 2, effect: p => { p.cps += 50; },          cpsBonus: 50 },
+  { id: 'cougar_flag',    name: '🚩 Cougar Flag',       desc: '+0.05× BBM',        baseCost: 1500,  ownedKey: 'u_flag',    tier: 2, effect: p => { p.blueBloodMultiplier += 0.05; }, cpsBonus: 0 },
+  { id: 'rivalry_trophy', name: '🏆 Rivalry Trophy',   desc: '+0.1× BlueBlood',   baseCost: 5000,  ownedKey: 'u_trophy',  tier: 2, effect: p => { p.blueBloodMultiplier += 0.1; },  cpsBonus: 0  },
+  // ===== TIER 3: Legends =====
+  { id: 'legends_banner', name: '🎖️ Legends Banner',   desc: '+100 CP/sec',       baseCost: 15000, ownedKey: 'u_banner',  tier: 3, effect: p => { p.cps += 100; },         cpsBonus: 100 },
+  { id: 'heisman_display',name: '🏆 Heisman Display',  desc: '+50 CP/click',      baseCost: 20000, ownedKey: 'u_heisman', tier: 3, effect: p => { p.clickPower += 50; },   cpsBonus: 0   },
+  { id: 'national_title', name: '🥇 National Title',   desc: '+0.25× BlueBlood',  baseCost: 40000, ownedKey: 'u_natl',    tier: 3, effect: p => { p.blueBloodMultiplier += 0.25; }, cpsBonus: 0 },
+  { id: 'hall_of_fame',   name: '⭐ Hall of Fame',     desc: '+500 CP/sec',       baseCost: 80000, ownedKey: 'u_hof',     tier: 3, effect: p => { p.cps += 500; },         cpsBonus: 500 },
+  // ===== TIER LEGEND: Prestige-locked =====
+  { id: 'dynasty_mode',   name: '👑 Dynasty Mode',     desc: '+1,000 CP/sec',     baseCost: 200000,ownedKey: 'u_dynasty',  tier: 'legend', effect: p => { p.cps += 1000; },    cpsBonus: 1000, prestigeReq: 1 },
+  { id: 'eternal_legacy', name: '🌟 Eternal Legacy',   desc: '+0.5× BlueBlood',   baseCost: 500000,ownedKey: 'u_eternal',  tier: 'legend', effect: p => { p.blueBloodMultiplier += 0.5; }, cpsBonus: 0, prestigeReq: 2 },
 ];
 
 const ACHIEVEMENTS = [
-  { id: 'first_click',   name: '👆 First Click',           desc: 'Click the jersey for the first time.',     check: (p) => p.totalClicks >= 1 },
-  { id: 'centurion',     name: '💯 Centurion',              desc: 'Earn 100 CougarPoints.',                   check: (p) => p.cougarPoints >= 100 },
-  { id: 'shard_hunter',  name: '💎 Shard Hunter',           desc: 'Earn 10 LegacyShards.',                   check: (p) => p.legacyShards >= 10 },
-  { id: 'shooter',       name: '🏀 Shooter',                desc: 'Make 10 baskets.',                         check: (p) => p.basketball.made >= 10 },
-  { id: 'jimmer',        name: '🌟 Jimmer Range',           desc: 'Hit 5 shots in a row.',                   check: (p) => p.basketball.streak >= 5 },
-  { id: 'frenzy_master', name: '🔥 Frenzy Master',         desc: 'Trigger Cougar Roar Frenzy.',              check: (p) => p.frenzyTriggered >= 1 },
-  { id: 'legend_chosen', name: '⭐ Legend Chosen',          desc: 'Select your first legend.',               check: () => state.activeLegend !== null },
-  { id: 'thousandaire',  name: '💰 Thousandaire',           desc: 'Earn 1,000 CougarPoints.',                check: (p) => p.cougarPoints >= 1000 },
+  // SCORING
+  { id: 'first_click',    name: '👆 First Click',      desc: 'Click the jersey for the first time.',    category: 'scoring',    check: (p) => p.totalClicks >= 1,              reward: { cp: 10 } },
+  { id: 'centurion',      name: '💯 Centurion',         desc: 'Earn 100 CougarPoints.',                  category: 'scoring',    check: (p) => p.lifetimeCP >= 100,             reward: { cp: 50 } },
+  { id: 'thousandaire',   name: '💰 Thousandaire',      desc: 'Earn 1,000 CougarPoints.',               category: 'scoring',    check: (p) => p.lifetimeCP >= 1000,            reward: { cp: 200 } },
+  { id: 'millionaire',    name: '🤑 Millionaire',       desc: 'Earn 1,000,000 CougarPoints.',           category: 'scoring',    check: (p) => p.lifetimeCP >= 1000000,         reward: { shards: 10 } },
+  { id: 'click_100',      name: '🖱️ Click Addict',      desc: 'Click 100 times.',                        category: 'speed',      check: (p) => p.totalClicks >= 100,            reward: { cp: 100 } },
+  { id: 'click_1000',     name: '⚡ Click Machine',     desc: 'Click 1,000 times.',                      category: 'speed',      check: (p) => p.totalClicks >= 1000,           reward: { cp: 500 } },
+  // COLLECTING
+  { id: 'shard_hunter',   name: '💎 Shard Hunter',      desc: 'Earn 10 LegacyShards.',                  category: 'collecting', check: (p) => p.legacyShards >= 10,            reward: { cp: 200 } },
+  { id: 'shard_rich',     name: '💠 Shard Rich',        desc: 'Earn 100 LegacyShards.',                 category: 'collecting', check: (p) => p.lifetimeShards >= 100,         reward: { cp: 1000 } },
+  { id: 'upgrade_5',      name: '⬆️ Upgrade Hoarder',  desc: 'Purchase 5 upgrades.',                    category: 'collecting', check: (p) => p.totalUpgradesBought >= 5,      reward: { cp: 300 } },
+  { id: 'upgrade_25',     name: '🏗️ Program Builder',  desc: 'Purchase 25 upgrades.',                  category: 'collecting', check: (p) => p.totalUpgradesBought >= 25,     reward: { shards: 5 } },
+  // BASKETBALL
+  { id: 'shooter',        name: '🏀 Shooter',           desc: 'Make 10 baskets.',                        category: 'scoring',    check: (p) => p.basketball.made >= 10,         reward: { shards: 2 } },
+  { id: 'jimmer',         name: '🌟 Jimmer Range',      desc: 'Hit 5 shots in a row.',                  category: 'speed',      check: (p) => p.basketball.streak >= 5,        reward: { shards: 5 } },
+  // FRENZY & LEGEND
+  { id: 'frenzy_master',  name: '🔥 Frenzy Master',    desc: 'Trigger Cougar Roar Frenzy.',             category: 'speed',      check: (p) => p.frenzyTriggered >= 1,          reward: { cp: 500 } },
+  { id: 'legend_chosen',  name: '⭐ Legend Chosen',     desc: 'Select your first legend.',              category: 'loyalty',    check: () => state.activeLegend !== null,       reward: { cp: 200 } },
+  { id: 'all_legends',    name: '🌠 Legend Collector',  desc: 'Activate all 4 legends at least once.',  category: 'collecting', check: (p) => p.legendsActivated >= 4,         reward: { shards: 10 } },
+  // LOYALTY
+  { id: 'prestige_1',     name: '🏆 First Prestige',   desc: 'Prestige for the first time.',            category: 'loyalty',    check: (p) => p.prestigeCount >= 1,            reward: { shards: 20 } },
+  { id: 'prestige_3',     name: '🔱 Triple Prestige',  desc: 'Prestige 3 times.',                       category: 'loyalty',    check: (p) => p.prestigeCount >= 3,            reward: { shards: 50 } },
+  { id: 'daily_streak_3', name: '📅 3-Day Streak',     desc: 'Log in 3 days in a row.',                 category: 'loyalty',    check: (p) => p.dailyStreak >= 3,              reward: { cp: 1000 } },
+  // HIDDEN
+  { id: 'cosmo_stunt_5',  name: '🐾 Stunt Legend',     desc: '???',                                     category: 'hidden',     check: (p) => p.cosmoStunts >= 5,              reward: { shards: 8 }, hidden: true },
+  { id: 'event_10',       name: '⚡ Event Chaser',      desc: '???',                                     category: 'hidden',     check: (p) => p.eventsClaimed >= 10,           reward: { shards: 15 }, hidden: true },
 ];
 
 // ==================== LEGENDS DATA ====================
@@ -573,18 +1064,86 @@ const LEGENDS = [
 
 // ==================== RETIRED NUMBERS ====================
 const RETIRED_NUMBERS = [
-  { number: 1,  name: 'Cosmo',          sport: '🐾', years: 'All-Time' },
-  { number: 7,  name: 'Gifford Nielsen',sport: '🏈', years: '1973–77'  },
-  { number: 8,  name: 'Steve Young',    sport: '🏈', years: '1981–83'  },
-  { number: 12, name: 'Jim McMahon',    sport: '🏈', years: '1977–81'  },
-  { number: 14, name: 'Ty Detmer',      sport: '🏈', years: '1988–91'  },
-  { number: 15, name: 'Robbie Bosco',   sport: '🏈', years: '1982–85'  },
-  { number: 22, name: 'Danny Ainge',    sport: '🏀', years: '1978–81'  },
-  { number: 32, name: 'Shawn Bradley', sport: '🏀', years: '1990–91'  },
-  { number: 34, name: 'Travis Hansen', sport: '🏀', years: '1999–03'  },
-  { number: 42, name: 'Devin Durrant', sport: '🏀', years: '1981–84'  },
-  { number: 52, name: 'Kyle Collinsworth',sport: '🏀', years: '2011–15' },
-  { number: 4,  name: 'Jimmer Fredette',sport: '🏀', years: '2007–11'  },
+  { number: 1,  name: 'Cosmo',             sport: '🐾', years: 'All-Time', rarity: 'legendary' },
+  { number: 4,  name: 'Jimmer Fredette',   sport: '🏀', years: '2007–11',  rarity: 'mythic'    },
+  { number: 7,  name: 'Gifford Nielsen',   sport: '🏈', years: '1973–77',  rarity: 'rare'      },
+  { number: 8,  name: 'Steve Young',       sport: '🏈', years: '1981–83',  rarity: 'mythic'    },
+  { number: 12, name: 'Jim McMahon',       sport: '🏈', years: '1977–81',  rarity: 'legendary' },
+  { number: 14, name: 'Ty Detmer',         sport: '🏈', years: '1988–91',  rarity: 'legendary' },
+  { number: 15, name: 'Robbie Bosco',      sport: '🏈', years: '1982–85',  rarity: 'rare'      },
+  { number: 22, name: 'Danny Ainge',       sport: '🏀', years: '1978–81',  rarity: 'legendary' },
+  { number: 32, name: 'Shawn Bradley',     sport: '🏀', years: '1990–91',  rarity: 'rare'      },
+  { number: 34, name: 'Travis Hansen',     sport: '🏀', years: '1999–03',  rarity: 'common'    },
+  { number: 42, name: 'Devin Durrant',     sport: '🏀', years: '1981–84',  rarity: 'common'    },
+  { number: 52, name: 'Kyle Collinsworth', sport: '🏀', years: '2011–15',  rarity: 'rare'      },
+];
+
+// ==================== SKILL TREE ====================
+const SKILL_TREE = {
+  offense: [
+    { id: 'sk_click_1',  name: '🏈 Strong Arm',     desc: '+5 CP/click',     cost: 5,  effect: p => { p.clickPower += 5; },                  req: null },
+    { id: 'sk_click_2',  name: '🎯 Precision',       desc: '+15 CP/click',    cost: 10, effect: p => { p.clickPower += 15; },                 req: 'sk_click_1' },
+    { id: 'sk_crit',     name: '⚡ Crit Boost',      desc: 'Crit chance +2%', cost: 15, effect: p => { p.critChanceBonus = (p.critChanceBonus||0) + 0.02; }, req: 'sk_click_2' },
+    { id: 'sk_frenzy',   name: '🔥 Extended Frenzy', desc: 'Frenzy +3s',      cost: 20, effect: p => { p.frenzyDurationBonus = (p.frenzyDurationBonus||0) + 3; }, req: 'sk_crit' },
+    { id: 'sk_legend_mult', name: '🌟 Legend Power', desc: '×1.5 legend mult',cost: 30, effect: p => { p.legendMultBonus = (p.legendMultBonus||0) + 0.5; }, req: 'sk_frenzy' },
+  ],
+  defense: [
+    { id: 'sk_cps_1',   name: '👥 Fan Base',       desc: '+10 CP/sec',       cost: 5,  effect: p => { p.cps += 10; },                        req: null },
+    { id: 'sk_cps_2',   name: '🎺 Band Camp',       desc: '+30 CP/sec',       cost: 10, effect: p => { p.cps += 30; },                        req: 'sk_cps_1' },
+    { id: 'sk_cps_3',   name: '🏟️ Full Stadium',   desc: '+100 CP/sec',      cost: 15, effect: p => { p.cps += 100; },                       req: 'sk_cps_2' },
+    { id: 'sk_bbm',     name: '💙 BlueBlood',       desc: '+0.2× BBM',        cost: 20, effect: p => { p.blueBloodMultiplier += 0.2; },        req: 'sk_cps_3' },
+    { id: 'sk_autofarm',name: '🤖 Auto-Scout',      desc: '×2 all CPS',       cost: 35, effect: p => { p.autoFarmMult = (p.autoFarmMult||1) * 2; }, req: 'sk_bbm' },
+  ],
+  fanEnergy: [
+    { id: 'sk_shard_1', name: '💎 Shard Sense',     desc: 'Baskets: +1 shard',cost: 5,  effect: p => { p.shardBonus = (p.shardBonus||0) + 1; },req: null },
+    { id: 'sk_event_1', name: '⚡ Event Magnet',     desc: 'Events 30% sooner',cost: 10, effect: p => { p.eventFreqBonus = (p.eventFreqBonus||0) + 0.3; }, req: 'sk_shard_1' },
+    { id: 'sk_streak',  name: '🔥 Streak King',      desc: 'Shoot streak ×2 pts',cost: 15, effect: p => { p.streakMult = (p.streakMult||1) * 2; }, req: 'sk_event_1' },
+    { id: 'sk_daily',   name: '📅 Loyal Fan',        desc: 'Daily rewards ×2',  cost: 20, effect: p => { p.dailyMult = (p.dailyMult||1) * 2; }, req: 'sk_streak' },
+    { id: 'sk_prestige_bonus', name: '🏆 Legacy',   desc: '+5 shards/prestige', cost: 30, effect: p => { p.prestigeShardsBonus = (p.prestigeShardsBonus||0) + 5; }, req: 'sk_daily' },
+  ]
+};
+
+// ==================== RANDOM EVENTS ====================
+const RANDOM_EVENTS = [
+  {
+    id: 'big_game',
+    icon: '🏟️', title: 'BIG GAME MOMENT!',
+    desc: 'The stadium erupts! Earn bonus Cougar Points for the next 30 seconds.',
+    duration: 30,
+    reward: { type: 'multiplier', value: 3, label: '3× CP for 30 seconds' },
+  },
+  {
+    id: 'buzzer_beater',
+    icon: '🚨', title: 'BUZZER BEATER BONUS!',
+    desc: 'A legendary shot at the buzzer! Instant CougarPoints reward!',
+    duration: 0,
+    reward: { type: 'instant_cp', value: 5000, label: '+5,000 Cougar Points' },
+  },
+  {
+    id: 'rivalry_weekend',
+    icon: '⚔️', title: 'RIVALRY WEEKEND!',
+    desc: 'Rivalry energy is at an all-time high! BlueBlood Multiplier surges!',
+    duration: 60,
+    reward: { type: 'bbm_boost', value: 0.5, label: '+0.5 BlueBlood × for 60 seconds' },
+  },
+  {
+    id: 'cougar_spirit',
+    icon: '🐾', title: 'COUGAR SPIRIT SURGE!',
+    desc: 'Cosmo leads the crowd! Massive Legacy Shard drop!',
+    duration: 0,
+    reward: { type: 'instant_shards', value: 25, label: '+25 Legacy Shards' },
+  },
+];
+
+// ==================== DAILY REWARDS ====================
+const DAILY_REWARDS = [
+  { day: 1, label: '500 CP',    reward: { cp: 500 } },
+  { day: 2, label: '1K CP',     reward: { cp: 1000 } },
+  { day: 3, label: '5 Shards',  reward: { shards: 5 } },
+  { day: 4, label: '5K CP',     reward: { cp: 5000 } },
+  { day: 5, label: '15 Shards', reward: { shards: 15 } },
+  { day: 6, label: '25K CP',    reward: { cp: 25000 } },
+  { day: 7, label: '50 Shards', reward: { shards: 50 } },
 ];
 
 // ==================== INIT STATE ====================
@@ -598,7 +1157,7 @@ UPGRADES.forEach(u => upgradeOwned[u.ownedKey] = 0);
 // ==================== SAVE / LOAD ====================
 function saveGame() {
   const data = { player, state, upgradeOwned };
-  const encoded = btoa(JSON.stringify(data));
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
   localStorage.setItem('byu_legend_save', encoded);
   showFloatText('Game Saved! 💾', window.innerWidth / 2, 100, false);
 }
@@ -606,18 +1165,22 @@ function loadGame() {
   try {
     const raw = localStorage.getItem('byu_legend_save');
     if (!raw) return;
-    const data = JSON.parse(atob(raw));
-    // Restore player fields
+    const data = JSON.parse(decodeURIComponent(escape(atob(raw))));
     Object.assign(player, data.player);
     Object.assign(state, data.state);
     Object.assign(upgradeOwned, data.upgradeOwned || {});
-    // Reapply era
     applyEra(state.historicalEra, false);
-    // Reapply legend bonuses without overriding multipliers
     if (player.activeLegend) {
       const leg = LEGENDS.find(l => l.id === player.activeLegend);
       if (leg) leg.applyBonus(player);
     }
+    // Reapply skill effects
+    (player.skillsUnlocked || []).forEach(sid => {
+      for (const branch of Object.values(SKILL_TREE)) {
+        const sk = branch.find(s => s.id === sid);
+        if (sk) sk.effect(player);
+      }
+    });
   } catch(e) { console.warn('Save load failed:', e); }
 }
 function resetGame() {
@@ -628,6 +1191,32 @@ function resetGame() {
   UPGRADES.forEach(u => upgradeOwned[u.ownedKey] = 0);
   applyEra('modern', false);
   renderAll();
+}
+function exportSave() {
+  const data = { player, state, upgradeOwned };
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  const textarea = document.createElement('textarea');
+  textarea.value = encoded;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  showFloatText('Save copied to clipboard! 📤', window.innerWidth / 2, 100, false);
+}
+function importSave() {
+  const raw = prompt('Paste your save code here:');
+  if (!raw) return;
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(raw.trim()))));
+    Object.assign(player, data.player);
+    Object.assign(state, data.state);
+    Object.assign(upgradeOwned, data.upgradeOwned || {});
+    applyEra(state.historicalEra, false);
+    renderAll();
+    showFloatText('Save imported! 📥', window.innerWidth / 2, 100, false);
+  } catch(e) {
+    alert('Invalid save code. Please try again.');
+  }
 }
 
 // ==================== NUMBER FORMATTER ====================
@@ -641,15 +1230,73 @@ function fmtNum(n) {
 // ==================== HUD UPDATE ====================
 function updateHUD() {
   document.getElementById('hud-cp').textContent = fmtNum(player.cougarPoints);
-  document.getElementById('hud-cps').textContent = (player.cps * player.blueBloodMultiplier).toFixed(1);
+  const effectiveCPS = player.cps * (player.autoFarmMult || 1) * player.blueBloodMultiplier * player.legacyMultiplier;
+  document.getElementById('hud-cps').textContent = effectiveCPS.toFixed(1);
   document.getElementById('hud-ls').textContent = fmtNum(player.legacyShards);
   document.getElementById('hud-bb').textContent = player.blueBloodMultiplier.toFixed(2) + '×';
-  document.getElementById('hud-streak').textContent = state.shootingStreak;
+  document.getElementById('hud-prestige').textContent = player.prestigeCount;
   document.getElementById('hud-clicks').textContent = fmtNum(player.totalClicks);
-  document.getElementById('bb-made').textContent = player.basketball.made;
-  document.getElementById('bb-missed').textContent = player.basketball.missed;
-  document.getElementById('bb-streak').textContent = player.basketball.streak;
-  document.getElementById('bb-shards').textContent = player.basketball.shardsEarned;
+  if (document.getElementById('bb-made')) {
+    document.getElementById('bb-made').textContent = player.basketball.made;
+    document.getElementById('bb-missed').textContent = player.basketball.missed;
+    document.getElementById('bb-streak').textContent = player.basketball.streak;
+    document.getElementById('bb-shards').textContent = player.basketball.shardsEarned;
+  }
+  updateXPBar();
+}
+
+// ==================== XP / LEVEL SYSTEM ====================
+function getXPThreshold(level) {
+  return Math.floor(100 * Math.pow(1.35, level - 1));
+}
+function getCurrentLevel() {
+  let level = 1;
+  let xp = player.lifetimeCP;
+  while (xp >= getXPThreshold(level)) {
+    xp -= getXPThreshold(level);
+    level++;
+    if (level >= 100) break;
+  }
+  return level;
+}
+function getXPInCurrentLevel() {
+  let xp = player.lifetimeCP;
+  let level = 1;
+  while (xp >= getXPThreshold(level) && level < 100) {
+    xp -= getXPThreshold(level);
+    level++;
+  }
+  return { current: Math.floor(xp), needed: getXPThreshold(level), level };
+}
+const LEVEL_UNLOCK_HINTS = {
+  5:  '🎯 Level 5: Crit chance improved!',
+  10: '🔥 Level 10: Frenzy lasts longer!',
+  20: '💡 Level 20: CPS efficiency bonus!',
+  50: '⭐ Level 50: Prestige boost unlocked!',
+};
+function updateXPBar() {
+  const { current, needed, level } = getXPInCurrentLevel();
+  const pct = Math.min(100, (current / needed) * 100);
+  document.getElementById('xp-bar-fill').style.width = pct + '%';
+  document.getElementById('xp-label').textContent = `Level ${level} — XP: ${fmtNum(current)} / ${fmtNum(needed)}`;
+  document.getElementById('level-badge').textContent = `LVL ${level}`;
+  document.getElementById('level-unlock-hint').textContent = LEVEL_UNLOCK_HINTS[level] || '';
+}
+
+// ==================== UPGRADE FILTER ====================
+let upgradeTierFilter = 'all';
+let achievementFilter = 'all';
+function setUpgradeTierFilter(tier) {
+  upgradeTierFilter = tier;
+  document.querySelectorAll('[id^=filter-]').forEach(b => b.classList.replace('bg-blue-800', 'bg-gray-700'));
+  const btnId = tier === 'all' ? 'filter-all' : tier === 1 ? 'filter-t1' : tier === 2 ? 'filter-t2' : 'filter-t3';
+  const btn = document.getElementById(btnId);
+  if (btn) btn.classList.replace('bg-gray-700', 'bg-blue-800');
+  renderUpgrades();
+}
+function setAchievementFilter(cat) {
+  achievementFilter = cat;
+  renderAchievements();
 }
 
 // ==================== MODULE SWITCHING ====================
@@ -722,23 +1369,22 @@ let frenzyInterval = null;
 function startFrenzy() {
   if (player.frenzyActive) return;
   player.frenzyActive = true;
-  player.frenzyTimeRemaining = 5;
+  const duration = 5 + (player.frenzyDurationBonus || 0);
+  player.frenzyTimeRemaining = duration;
   player.frenzyTriggered++;
   document.getElementById('frenzy-bar-wrap').classList.remove('hidden');
   document.getElementById('frenzy-overlay').classList.add('active');
   document.getElementById('jersey-canvas').classList.add('frenzy');
-  document.getElementById('click-status').textContent = '⚡ COUGAR ROAR FRENZY! 5× POINTS! ⚡';
+  document.getElementById('click-status').textContent = `⚡ COUGAR ROAR FRENZY! 5× POINTS for ${duration}s! ⚡`;
   playCougarRoar();
   triggerConfetti(30);
   checkAchievements();
 
   frenzyInterval = setInterval(() => {
     player.frenzyTimeRemaining -= 0.1;
-    const pct = (player.frenzyTimeRemaining / 5) * 100;
+    const pct = (player.frenzyTimeRemaining / duration) * 100;
     document.getElementById('frenzy-progress').style.width = Math.max(0, pct) + '%';
-    if (player.frenzyTimeRemaining <= 0) {
-      endFrenzy();
-    }
+    if (player.frenzyTimeRemaining <= 0) endFrenzy();
   }, 100);
 }
 function endFrenzy() {
@@ -984,24 +1630,24 @@ jerseyCanvas.addEventListener('click', (e) => {
   const cx = e.clientX - rect.left;
   const cy = e.clientY - rect.top;
 
-  // Vertex ripple
   applyRipple(cx, cy);
   playClick(false);
 
-  // Calculate click value
   let cp = player.clickPower;
-  // Legend bonus
   if (player.activeLegend === 'steve_young') cp *= (player._clickMultiplier || 2);
   if (player.cosmoMultiplier > 1) cp *= player.cosmoMultiplier;
   if (player.frenzyActive) cp *= 5;
   cp *= player.blueBloodMultiplier;
+  cp *= player.legacyMultiplier;
+  // Level bonus: +1% per level above 1
+  const lvl = getCurrentLevel();
+  if (lvl > 1) cp *= (1 + (lvl - 1) * 0.01);
 
-  // Critical click (1%)
-  const isCrit = Math.random() < 0.01;
+  const critChance = 0.01 + (player.critChanceBonus || 0);
+  const isCrit = Math.random() < critChance;
   if (isCrit) {
     cp *= 10;
     playClick(true);
-    // Flash
     const flash = document.createElement('div');
     flash.className = 'crit-flash';
     document.body.appendChild(flash);
@@ -1013,6 +1659,7 @@ jerseyCanvas.addEventListener('click', (e) => {
   }
 
   player.cougarPoints += cp;
+  player.lifetimeCP += cp;
   player.totalClicks++;
   checkAchievements();
   updateHUD();
@@ -1023,16 +1670,34 @@ jerseyCanvas.addEventListener('click', (e) => {
 function renderUpgrades() {
   const list = document.getElementById('upgrades-list');
   list.innerHTML = '';
-  UPGRADES.forEach(u => {
+  const filtered = upgradeTierFilter === 'all'
+    ? UPGRADES
+    : upgradeTierFilter === 3
+      ? UPGRADES.filter(u => u.tier === 'legend')
+      : UPGRADES.filter(u => u.tier === upgradeTierFilter);
+
+  filtered.forEach(u => {
+    // Check prestige requirement
+    if (u.prestigeReq && player.prestigeCount < u.prestigeReq) {
+      const div = document.createElement('div');
+      div.className = 'upgrade-card locked';
+      div.innerHTML = `<div class="text-sm font-bold">${u.name}</div><div class="text-xs text-gray-500">Requires Prestige ${u.prestigeReq}</div>`;
+      list.appendChild(div);
+      return;
+    }
     const owned = upgradeOwned[u.ownedKey] || 0;
     const cost = calcCost(u.baseCost, owned);
     const canAfford = player.cougarPoints >= cost;
+    const tierClass = u.tier === 'legend' ? ' tier-legend' : u.tier === 3 ? ' tier-3' : u.tier === 2 ? ' tier-2' : '';
     const div = document.createElement('div');
-    div.className = 'upgrade-card' + (!canAfford ? ' locked' : '');
+    div.className = 'upgrade-card' + tierClass + (!canAfford ? ' locked' : '');
+    const tierLabel = u.tier === 'legend' ? '<span class="text-purple-400 text-xs font-bold">LEGEND</span>' :
+                      u.tier === 3 ? '<span class="text-yellow-400 text-xs font-bold">T3</span>' :
+                      u.tier === 2 ? '<span class="text-blue-400 text-xs font-bold">T2</span>' : '';
     div.innerHTML = `
       <div class="flex justify-between items-start">
         <div>
-          <div class="font-bold text-sm">${u.name}</div>
+          <div class="font-bold text-sm">${u.name} ${tierLabel}</div>
           <div class="text-xs text-gray-400">${u.desc}</div>
           <div class="text-xs text-gray-500">Owned: ${owned}</div>
         </div>
@@ -1041,9 +1706,7 @@ function renderUpgrades() {
           <div class="text-xs text-gray-500">CP</div>
         </div>
       </div>`;
-    if (canAfford) {
-      div.onclick = () => buyUpgrade(u);
-    }
+    if (canAfford) div.onclick = () => buyUpgrade(u);
     list.appendChild(div);
   });
 }
@@ -1056,6 +1719,7 @@ function buyUpgrade(upgrade) {
   upgradeOwned[upgrade.ownedKey] = owned + 1;
   upgrade.effect(player);
   player.inventory.push(upgrade.id + '_' + (owned + 1));
+  player.totalUpgradesBought++;
   playTone(660, 'sine', 0.2, 0.3);
   showFloatText(`${upgrade.name} purchased!`, window.innerWidth / 2, 200, false);
   checkAchievements();
@@ -1068,9 +1732,15 @@ function checkAchievements() {
   ACHIEVEMENTS.forEach(a => {
     if (!player.achievements.includes(a.id) && a.check(player)) {
       player.achievements.push(a.id);
-      showFloatText(`🏆 Achievement: ${a.name}`, window.innerWidth / 2, 150, true);
+      // Apply reward
+      if (a.reward) {
+        if (a.reward.cp)     { player.cougarPoints += a.reward.cp; player.lifetimeCP += a.reward.cp; }
+        if (a.reward.shards) { player.legacyShards += a.reward.shards; player.lifetimeShards += a.reward.shards; }
+      }
+      showFloatText(`🏆 ${a.name}`, window.innerWidth / 2, 150, true);
       triggerConfetti(20);
       renderAchievements();
+      updateHUD();
     }
   });
 }
@@ -1078,13 +1748,19 @@ function checkAchievements() {
 function renderAchievements() {
   const list = document.getElementById('achievements-list');
   list.innerHTML = '';
-  ACHIEVEMENTS.forEach(a => {
+  const filtered = achievementFilter === 'all'
+    ? ACHIEVEMENTS
+    : ACHIEVEMENTS.filter(a => a.category === achievementFilter);
+  filtered.forEach(a => {
     const earned = player.achievements.includes(a.id);
+    if (a.hidden && !earned) return;
     const div = document.createElement('div');
     div.className = 'upgrade-card' + (earned ? ' purchased' : ' locked');
+    const catColors = { scoring:'cat-scoring', collecting:'cat-collecting', loyalty:'cat-loyalty', speed:'cat-speed', hidden:'cat-hidden' };
     div.innerHTML = `
+      <div class="achievement-category ${catColors[a.category] || ''}">${a.category}</div>
       <div class="font-bold text-xs">${earned ? '✅' : '🔒'} ${a.name}</div>
-      <div class="text-xs text-gray-400">${a.desc}</div>`;
+      <div class="text-xs text-gray-400">${earned || !a.hidden ? a.desc : '???'}</div>`;
     list.appendChild(div);
   });
 }
@@ -1115,7 +1791,6 @@ function renderLegends() {
 }
 
 function selectLegend(id) {
-  // Reset multipliers
   player._clickMultiplier = 1;
   player._aimingBonus = 0;
   player.cosmoMultiplier = 1;
@@ -1125,6 +1800,12 @@ function selectLegend(id) {
   player.activeLegend = id;
   state.activeLegend = id;
 
+  if (!player.legendsActivatedSet) player.legendsActivatedSet = [];
+  if (!player.legendsActivatedSet.includes(id)) {
+    player.legendsActivatedSet.push(id);
+    player.legendsActivated = player.legendsActivatedSet.length;
+  }
+
   const leg = LEGENDS.find(l => l.id === id);
   if (leg) {
     leg.applyBonus(player);
@@ -1133,9 +1814,7 @@ function selectLegend(id) {
     triggerConfetti(30);
   }
 
-  if (player.heismanActive) {
-    document.body.classList.add('heisman-active');
-  }
+  if (player.heismanActive) document.body.classList.add('heisman-active');
 
   checkAchievements();
   renderLegends();
@@ -1152,10 +1831,12 @@ function triggerCosmoStunt() {
     return;
   }
   player.cosmoMultiplier = 3;
+  player.cosmoStunts = (player.cosmoStunts || 0) + 1;
   btn.classList.add('stunt');
   showFloatText('🐾 STUNT SHOW! 3× POINTS for 10s!', window.innerWidth / 2, 200, true);
   playTone(700, 'square', 0.4, 0.3);
   triggerConfetti(20);
+  checkAchievements();
   clearTimeout(cosmoStuntTimeout);
   cosmoStuntTimeout = setTimeout(() => {
     player.cosmoMultiplier = 1;
@@ -1168,9 +1849,13 @@ function renderGallery() {
   const grid = document.getElementById('gallery-grid');
   grid.innerHTML = '';
   RETIRED_NUMBERS.forEach(entry => {
+    const rarity = entry.rarity || 'common';
+    const badgeClass = `badge-${rarity}`;
+    const cardClass = `rarity-${rarity}`;
     const card = document.createElement('div');
-    card.className = 'retired-number-card';
+    card.className = `jersey-rarity-card ${cardClass}`;
     card.innerHTML = `
+      <span class="rarity-badge ${badgeClass}">${rarity.toUpperCase()}</span>
       <div class="text-4xl font-black text-yellow-400">${entry.number}</div>
       <div class="text-xs font-bold text-white mt-1">${entry.name}</div>
       <div class="text-lg mt-1">${entry.sport}</div>
@@ -1395,12 +2080,14 @@ function scoredBasket() {
   player.basketball.streak++;
   state.shootingStreak = player.basketball.streak;
 
-  let shards = 1;
-  if (wasJimmer) shards = 5;
+  let shards = 1 + (player.shardBonus || 0);
+  if (wasJimmer) shards = Math.max(shards, 1) * 5;
   if (player.activeLegend === 'danny_ainge') shards = Math.floor(shards * 1.5);
+  shards = Math.floor(shards);
 
   player.basketball.shardsEarned += shards;
   player.legacyShards += shards;
+  player.lifetimeShards += shards;
 
   playSwish();
   triggerConfetti(20);
@@ -1610,15 +2297,20 @@ let lastTime = 0;
 let cpsAccum = 0;
 
 function gameLoop(timestamp) {
-  const dt = Math.min(timestamp - lastTime, 50); // cap at 50ms
+  const dt = Math.min(timestamp - lastTime, 50);
   lastTime = timestamp;
+
+  // Track time played
+  player.timePlayed = (player.timePlayed || 0) + dt / 1000;
 
   // CPS income
   cpsAccum += dt / 1000;
   if (cpsAccum >= 0.1) {
-    const income = player.cps * player.blueBloodMultiplier * 0.1;
+    const effectiveCPS = player.cps * (player.autoFarmMult || 1) * player.blueBloodMultiplier * player.legacyMultiplier;
+    const income = effectiveCPS * 0.1;
     if (income > 0) {
       player.cougarPoints += income;
+      player.lifetimeCP += income;
       checkAchievements();
     }
     cpsAccum = 0;
@@ -1629,14 +2321,10 @@ function gameLoop(timestamp) {
   renderJersey();
 
   // Basketball
-  if (!ball.inFlight && !aimState.dragging && ball.y < COURT.h - ball.r - 1) {
-    // Gravity when on floor rest
-  }
   if (ball.active) {
     const prevInFlight = ball.inFlight;
     const prevY = ball.y;
     updateBall();
-    // Check if hit the floor while in flight -> miss
     if (prevInFlight && ball.y + ball.r >= COURT.h && prevY + ball.r < COURT.h) {
       handleFloorMiss();
     }
@@ -1648,13 +2336,380 @@ function gameLoop(timestamp) {
   requestAnimationFrame(gameLoop);
 }
 
-// ==================== RENDER ALL ====================
+// ==================== PRESTIGE SYSTEM ====================
+function doPrestige() {
+  const needed = 50000;
+  if (player.lifetimeCP < needed) {
+    showFloatText('Need 50,000 lifetime CP!', window.innerWidth / 2, 200, false);
+    return;
+  }
+  if (!confirm(`Prestige ${player.prestigeCount + 1}: Reset progress and gain a Legacy Multiplier boost + Legacy Shards?`)) return;
+
+  const shardsGain = 10 + player.prestigeCount * 5 + (player.prestigeShardsBonus || 0);
+  player.prestigeCount++;
+  player.legacyMultiplier = 1.0 + player.prestigeCount * 0.25;
+  player.legacyShards += shardsGain;
+  player.lifetimeShards += shardsGain;
+
+  // Reset progression
+  player.cougarPoints = 0;
+  player.cps = 0;
+  player.clickPower = 1;
+  player.blueBloodMultiplier = 1.0;
+  player.inventory = [];
+  player.frenzyActive = false;
+  player.frenzyTimeRemaining = 0;
+  player.cosmoMultiplier = 1;
+  player.heismanActive = false;
+  document.body.classList.remove('heisman-active');
+  UPGRADES.forEach(u => upgradeOwned[u.ownedKey] = 0);
+
+  // Keep: achievements, legend selections, basketball stats, daily streak, skills, lifetime stats
+
+  // Re-apply skills after reset
+  (player.skillsUnlocked || []).forEach(sid => {
+    for (const branch of Object.values(SKILL_TREE)) {
+      const sk = branch.find(s => s.id === sid);
+      if (sk) sk.effect(player);
+    }
+  });
+
+  showFloatText(`🏆 PRESTIGE ${player.prestigeCount}! +${shardsGain} Shards!`, window.innerWidth / 2, 200, true);
+  triggerConfetti(80);
+  playTone(880, 'square', 0.6, 0.5);
+  setTimeout(() => playTone(1100, 'sine', 0.5, 0.4), 200);
+  checkAchievements();
+  renderAll();
+  saveGame();
+}
+
+function renderPrestige() {
+  const needed = 50000;
+  const pct = Math.min(100, (player.lifetimeCP / needed) * 100);
+  const canPrestige = player.lifetimeCP >= needed;
+
+  const ring = document.getElementById('prestige-ring');
+  if (ring) ring.textContent = player.prestigeCount;
+
+  const multDisplay = document.getElementById('legacy-mult-display');
+  if (multDisplay) multDisplay.textContent = player.legacyMultiplier.toFixed(2) + '×';
+
+  const shardsPreview = document.getElementById('prestige-shards-preview');
+  if (shardsPreview) {
+    const gain = 10 + player.prestigeCount * 5 + (player.prestigeShardsBonus || 0);
+    shardsPreview.textContent = `+${gain} Legacy Shards`;
+  }
+
+  const fill = document.getElementById('prestige-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+
+  const label = document.getElementById('prestige-progress-label');
+  if (label) label.textContent = `${fmtNum(player.lifetimeCP)} / ${fmtNum(needed)} CP`;
+
+  const btn = document.getElementById('prestige-btn');
+  if (btn) btn.disabled = !canPrestige;
+
+  renderSkillTree();
+}
+
+// ==================== SKILL TREE ====================
+function renderSkillTree() {
+  const grid = document.getElementById('skill-tree-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  const shardDisplay = document.getElementById('skill-shards-display');
+  if (shardDisplay) shardDisplay.textContent = fmtNum(player.legacyShards);
+
+  const branches = [
+    { key: 'offense',   label: '⚔️ OFFENSE',    color: 'text-red-400'    },
+    { key: 'defense',   label: '🛡️ DEFENSE',     color: 'text-blue-400'   },
+    { key: 'fanEnergy', label: '⚡ FAN ENERGY',   color: 'text-yellow-400' },
+  ];
+
+  branches.forEach(branch => {
+    const col = document.createElement('div');
+    col.innerHTML = `<div class="skill-branch-title ${branch.color}">${branch.label}</div>`;
+
+    const skills = SKILL_TREE[branch.key];
+    skills.forEach((skill, idx) => {
+      if (idx > 0) {
+        const conn = document.createElement('div');
+        conn.className = 'skill-connector';
+        col.appendChild(conn);
+      }
+      const unlocked = (player.skillsUnlocked || []).includes(skill.id);
+      const prevUnlocked = idx === 0 || (player.skillsUnlocked || []).includes(skills[idx - 1].id);
+      const canAfford = player.legacyShards >= skill.cost;
+      const available = prevUnlocked && !unlocked;
+
+      const node = document.createElement('div');
+      node.className = 'skill-node ' + (unlocked ? 'maxed-skill' : !prevUnlocked ? 'locked-skill' : !canAfford ? 'locked-skill' : 'unlocked-skill');
+      node.innerHTML = `
+        <div class="text-xl mb-1">${unlocked ? '✅' : !prevUnlocked ? '🔒' : '⬆️'}</div>
+        <div class="text-xs font-bold text-white">${skill.name}</div>
+        <div class="text-xs text-gray-400 mt-1">${skill.desc}</div>
+        <div class="text-xs mt-1 ${unlocked ? 'text-green-400' : 'text-yellow-400'}">${unlocked ? 'UNLOCKED' : skill.cost + ' Shards'}</div>`;
+      if (available && canAfford) node.onclick = () => buySkill(branch.key, skill.id);
+      col.appendChild(node);
+    });
+
+    grid.appendChild(col);
+  });
+}
+
+function buySkill(branchKey, skillId) {
+  const branch = SKILL_TREE[branchKey];
+  const skill = branch.find(s => s.id === skillId);
+  if (!skill) return;
+  if ((player.skillsUnlocked || []).includes(skillId)) return;
+  if (player.legacyShards < skill.cost) {
+    showFloatText('Not enough Legacy Shards!', window.innerWidth / 2, 200, false);
+    return;
+  }
+  player.legacyShards -= skill.cost;
+  if (!player.skillsUnlocked) player.skillsUnlocked = [];
+  player.skillsUnlocked.push(skillId);
+  skill.effect(player);
+  playTone(660, 'sine', 0.3, 0.3);
+  setTimeout(() => playTone(880, 'sine', 0.2, 0.3), 150);
+  showFloatText(`${skill.name} unlocked!`, window.innerWidth / 2, 200, true);
+  triggerConfetti(15);
+  renderSkillTree();
+  updateHUD();
+}
+
+// ==================== RANDOM EVENTS ====================
+let eventActive = false;
+let eventEndTime = 0;
+let eventTempBBM = 0;
+
+function triggerRandomEvent() {
+  if (eventActive) return;
+  const event = RANDOM_EVENTS[Math.floor(Math.random() * RANDOM_EVENTS.length)];
+  state.activeEvent = event;
+  eventActive = true;
+
+  document.getElementById('event-icon').textContent = event.icon;
+  document.getElementById('event-title').textContent = event.title;
+  document.getElementById('event-desc').innerHTML = `${event.desc}<br><br><span class="text-yellow-400 font-bold text-lg">${event.reward.label}</span>`;
+  document.getElementById('random-event-overlay').classList.add('active');
+
+  playTone(660, 'square', 0.1, 0.3);
+  setTimeout(() => playTone(880, 'sine', 0.3, 0.4), 150);
+}
+
+function claimEvent() {
+  const event = state.activeEvent;
+  if (!event) return;
+
+  const mult = player.dailyMult || 1;
+  switch (event.reward.type) {
+    case 'instant_cp':
+      const cp = event.reward.value * player.legacyMultiplier;
+      player.cougarPoints += cp;
+      player.lifetimeCP += cp;
+      showFloatText(`+${fmtNum(cp)} CP!`, window.innerWidth / 2, 300, true);
+      break;
+    case 'multiplier':
+      const origCPS = player.cps;
+      player.cps *= event.reward.value;
+      setTimeout(() => { player.cps = origCPS; }, event.duration * 1000);
+      showFloatText(`${event.reward.value}× CPS for ${event.duration}s!`, window.innerWidth / 2, 300, true);
+      break;
+    case 'bbm_boost':
+      player.blueBloodMultiplier += event.reward.value;
+      setTimeout(() => { player.blueBloodMultiplier -= event.reward.value; }, event.duration * 1000);
+      showFloatText(`+${event.reward.value} BlueBlood ×!`, window.innerWidth / 2, 300, true);
+      break;
+    case 'instant_shards':
+      const sh = event.reward.value * mult;
+      player.legacyShards += sh;
+      player.lifetimeShards += sh;
+      showFloatText(`+${sh} Shards!`, window.innerWidth / 2, 300, true);
+      break;
+  }
+
+  player.eventsClaimed = (player.eventsClaimed || 0) + 1;
+  triggerConfetti(40);
+  document.getElementById('random-event-overlay').classList.remove('active');
+  state.activeEvent = null;
+  eventActive = false;
+  checkAchievements();
+  updateHUD();
+}
+
+// Random event timer
+let eventTimer = 0;
+function tickEventTimer(dt) {
+  if (eventActive) return;
+  eventTimer += dt;
+  const freq = 120 - (player.eventFreqBonus || 0) * 60;
+  const threshold = Math.max(30, freq) * 1000;
+  if (eventTimer >= threshold) {
+    eventTimer = 0;
+    if (Math.random() < 0.4) triggerRandomEvent();
+  }
+}
+
+// ==================== DAILY REWARDS ====================
+function showDailyModal() {
+  renderDailyModal();
+  document.getElementById('daily-modal').classList.add('active');
+}
+function closeDailyModal() {
+  document.getElementById('daily-modal').classList.remove('active');
+}
+function renderDailyModal() {
+  const today = new Date().toDateString();
+  const lastDate = player.lastDailyDate;
+  const streak = player.dailyStreak || 0;
+  const alreadyClaimed = lastDate === today;
+  const streakDay = ((streak - 1) % 7) + 1;
+  const nextDay = (streak % 7) + 1;
+
+  const grid = document.getElementById('daily-days-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  DAILY_REWARDS.forEach((r, i) => {
+    const dayNum = i + 1;
+    const btn = document.createElement('div');
+    const isClaimed = dayNum < (alreadyClaimed ? streakDay : nextDay);
+    const isToday = dayNum === (alreadyClaimed ? streakDay : nextDay);
+    btn.className = 'daily-day-btn ' + (isClaimed ? 'claimed' : isToday ? 'today' : 'future');
+    btn.innerHTML = `<div class="text-xs font-bold">Day ${dayNum}</div><div class="text-lg">${dayNum === 7 ? '🌟' : '🎁'}</div><div class="text-xs">${r.label}</div>`;
+    grid.appendChild(btn);
+  });
+
+  const todayReward = DAILY_REWARDS[(nextDay - 1) % 7];
+  const desc = document.getElementById('daily-reward-desc');
+  if (desc) {
+    if (alreadyClaimed) {
+      desc.textContent = `✅ Already claimed today! Come back tomorrow. (Streak: ${streak} days)`;
+    } else {
+      desc.textContent = `Today's reward: ${todayReward.label} (Streak: ${streak} days)`;
+    }
+  }
+  const btn = document.getElementById('daily-claim-btn');
+  if (btn) btn.disabled = alreadyClaimed;
+}
+
+function claimDailyReward() {
+  const today = new Date().toDateString();
+  if (player.lastDailyDate === today) return;
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const isConsecutive = player.lastDailyDate === yesterday.toDateString();
+  player.dailyStreak = isConsecutive ? (player.dailyStreak || 0) + 1 : 1;
+  player.lastDailyDate = today;
+
+  const dayIdx = ((player.dailyStreak - 1) % 7);
+  const reward = DAILY_REWARDS[dayIdx];
+  const mult = player.dailyMult || 1;
+
+  if (reward.reward.cp)     { const cp = reward.reward.cp * mult; player.cougarPoints += cp; player.lifetimeCP += cp; }
+  if (reward.reward.shards) { const sh = reward.reward.shards * mult; player.legacyShards += sh; player.lifetimeShards += sh; }
+
+  showFloatText(`🎁 Day ${player.dailyStreak} Reward: ${reward.label}!`, window.innerWidth / 2, 300, true);
+  triggerConfetti(30);
+  playTone(880, 'sine', 0.4, 0.4);
+  checkAchievements();
+  renderDailyModal();
+  updateHUD();
+}
+
+// ==================== STATS TAB ====================
+function renderStats() {
+  const grid = document.getElementById('stats-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  const fmtTime = (s) => {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    return h > 0 ? `${h}h ${m}m` : `${m}m`;
+  };
+
+  const stats = [
+    { label: 'Lifetime CP', value: fmtNum(player.lifetimeCP) },
+    { label: 'Total Clicks', value: fmtNum(player.totalClicks) },
+    { label: 'Legacy Shards', value: fmtNum(player.lifetimeShards) },
+    { label: 'Baskets Made', value: player.basketball.made },
+    { label: 'Best Streak', value: player.basketball.streak },
+    { label: 'Prestige Count', value: player.prestigeCount },
+    { label: 'Upgrades Bought', value: player.totalUpgradesBought },
+    { label: 'Events Claimed', value: player.eventsClaimed || 0 },
+    { label: 'Daily Streak', value: `${player.dailyStreak || 0} days` },
+    { label: 'Frenzy Triggers', value: player.frenzyTriggered },
+    { label: 'Legacy ×', value: player.legacyMultiplier.toFixed(2) },
+    { label: 'Time Played', value: fmtTime(player.timePlayed || 0) },
+  ];
+
+  stats.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'stat-card';
+    card.innerHTML = `<div class="stat-value">${s.value}</div><div class="stat-label">${s.label}</div>`;
+    grid.appendChild(card);
+  });
+
+  // CPS breakdown
+  const breakdown = document.getElementById('cps-breakdown');
+  if (breakdown) {
+    breakdown.innerHTML = '';
+    UPGRADES.filter(u => u.cpsBonus > 0).forEach(u => {
+      const owned = upgradeOwned[u.ownedKey] || 0;
+      if (owned === 0) return;
+      const totalCPS = u.cpsBonus * owned;
+      const row = document.createElement('div');
+      row.className = 'flex justify-between text-gray-300';
+      row.innerHTML = `<span>${u.name} (×${owned})</span><span class="text-yellow-400">+${totalCPS} CP/s</span>`;
+      breakdown.appendChild(row);
+    });
+    if (breakdown.children.length === 0) {
+      breakdown.innerHTML = '<div class="text-gray-500 text-sm">No passive income yet. Buy upgrades!</div>';
+    }
+  }
+
+  // Trophy case
+  const trophyGrid = document.getElementById('trophy-case-grid');
+  if (trophyGrid) {
+    trophyGrid.innerHTML = '';
+    ACHIEVEMENTS.forEach(a => {
+      const earned = player.achievements.includes(a.id);
+      if (!earned) return;
+      const card = document.createElement('div');
+      card.className = 'stat-card';
+      const catColors = { scoring:'text-orange-400', collecting:'text-blue-400', loyalty:'text-yellow-400', speed:'text-green-400', hidden:'text-purple-400' };
+      card.innerHTML = `<div class="text-2xl mb-1">✅</div><div class="text-xs font-bold ${catColors[a.category] || 'text-white'}">${a.name}</div>`;
+      trophyGrid.appendChild(card);
+    });
+    if (trophyGrid.children.length === 0) {
+      trophyGrid.innerHTML = '<div class="text-gray-500 text-sm col-span-4">No achievements yet. Keep playing!</div>';
+    }
+  }
+}
+
+// ==================== SHARE SCORE ====================
+function shareScore() {
+  const level = getCurrentLevel();
+  const text = `🏈 BYU Legend Multiverse | Level ${level} | ${fmtNum(player.lifetimeCP)} CP earned | ${player.prestigeCount} Prestiges | #BYULegendMultiverse`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showFloatText('Score copied to clipboard! 🔗', window.innerWidth / 2, 100, false);
+    });
+  } else {
+    prompt('Copy your score:', text);
+  }
+}
 function renderAll() {
   renderUpgrades();
   renderAchievements();
   renderLegends();
   renderGallery();
   renderJersey();
+  renderPrestige();
+  renderStats();
   updateHUD();
 }
 
@@ -1663,11 +2718,24 @@ loadGame();
 renderAll();
 requestAnimationFrame((ts) => { lastTime = ts; gameLoop(ts); });
 
-// Auto-save every 30 seconds
-setInterval(saveGame, 30000);
+// Auto-save every 5 seconds
+setInterval(saveGame, 5000);
 
 // Periodic achievement check
 setInterval(checkAchievements, 2000);
+
+// Random event ticker
+setInterval(() => { tickEventTimer(1000); }, 1000);
+
+// Refresh stats/prestige panels
+setInterval(() => {
+  const activeTab = document.querySelector('.module-tab.active');
+  if (activeTab) {
+    const tab = activeTab.getAttribute('data-tab');
+    if (tab === 'stats') renderStats();
+    if (tab === 'prestige') renderPrestige();
+  }
+}, 3000);
 
 console.log('%c⚡ BYU LEGEND MULTIVERSE LOADED ⚡', 'font-size:20px;color:#FFD700;background:#002E5D;padding:8px 16px;border-radius:4px;');
 </script>
