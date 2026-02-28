@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BYU Legend Multiverse – Modern Era</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -617,7 +617,7 @@
       <div class="flex items-center gap-2 flex-wrap justify-end">
         <button id="cosmo-btn" title="Cosmo the Cougar" onclick="triggerCosmoStunt()">🐾</button>
         <button onclick="showDailyModal()" class="text-xs bg-purple-800 hover:bg-purple-700 px-3 py-1 rounded text-white transition">🎁 Daily</button>
-        <button onclick="saveGame()" class="text-xs bg-green-700 hover:bg-green-600 px-3 py-1 rounded text-white transition">💾 Save</button>
+        <button onclick="saveGame(true)" class="text-xs bg-green-700 hover:bg-green-600 px-3 py-1 rounded text-white transition">💾 Save</button>
         <button onclick="exportSave()" class="save-action-btn">📤 Export</button>
         <button onclick="importSave()" class="save-action-btn">📥 Import</button>
         <button onclick="shareScore()" class="share-btn">🔗 Share</button>
@@ -677,12 +677,12 @@
 <!-- ==================== MODULE TABS ==================== -->
 <div class="bg-gray-900 border-b border-gray-700 sticky top-0 z-50 overflow-x-auto">
   <div class="max-w-7xl mx-auto flex gap-0 min-w-max">
-    <button class="module-tab active px-5 py-3 font-bold text-sm" data-tab="jersey" onclick="switchModule('jersey')">🏷️ <span class="tab-text">JERSEY VAULT</span></button>
-    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="basketball" onclick="switchModule('basketball')">🏀 <span class="tab-text">MARRIOTT CENTER</span></button>
-    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="legends" onclick="switchModule('legends')">📖 <span class="tab-text">LEGEND DATABASE</span></button>
-    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="gallery" onclick="switchModule('gallery')">🔢 <span class="tab-text">RETIRED NUMBERS</span></button>
-    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="prestige" onclick="switchModule('prestige')">🏆 <span class="tab-text">PRESTIGE</span></button>
-    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="stats" onclick="switchModule('stats')">📊 <span class="tab-text">STATS</span></button>
+    <button class="module-tab active px-5 py-3 font-bold text-sm" data-tab="jersey" onclick="switchModule('jersey')" aria-label="Jersey Vault">🏷️ <span class="tab-text">JERSEY VAULT</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="basketball" onclick="switchModule('basketball')" aria-label="Marriott Center">🏀 <span class="tab-text">MARRIOTT CENTER</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="legends" onclick="switchModule('legends')" aria-label="Legend Database">📖 <span class="tab-text">LEGEND DATABASE</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="gallery" onclick="switchModule('gallery')" aria-label="Retired Numbers">🔢 <span class="tab-text">RETIRED NUMBERS</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="prestige" onclick="switchModule('prestige')" aria-label="Prestige">🏆 <span class="tab-text">PRESTIGE</span></button>
+    <button class="module-tab px-5 py-3 font-bold text-sm" data-tab="stats" onclick="switchModule('stats')" aria-label="Stats">📊 <span class="tab-text">STATS</span></button>
   </div>
 </div>
 
@@ -803,7 +803,7 @@
             </div>
             <div class="flex justify-between text-sm">
               <span class="text-gray-400">Requirement</span>
-              <span class="text-blue-400 font-bold">50,000 CP total earned</span>
+              <span class="text-blue-400 font-bold">50,000 CP lifetime earned</span>
             </div>
             <div class="progress-bar mt-2">
               <div id="prestige-progress-fill" class="progress-fill" style="width:0%;"></div>
@@ -953,6 +953,15 @@ class Player {
     this.timePlayed = 0;
   }
 }
+
+// ==================== GAME CONSTANTS ====================
+const BASE_XP_THRESHOLD = 100;
+const XP_GROWTH_RATE = 1.35;
+const PRESTIGE_CP_REQUIREMENT = 50000;
+const BASE_EVENT_INTERVAL_SEC = 120;
+const EVENT_FREQ_REDUCTION_SEC = 60;
+const MIN_EVENT_INTERVAL_SEC = 30;
+const AUTOSAVE_INTERVAL_MS = 5000;
 
 // ==================== PRESTIGE ECONOMY ====================
 function calcCost(baseCost, owned) {
@@ -1155,11 +1164,15 @@ const upgradeOwned = {};
 UPGRADES.forEach(u => upgradeOwned[u.ownedKey] = 0);
 
 // ==================== SAVE / LOAD ====================
-function saveGame() {
+let _saveDirty = false;
+function markDirty() { _saveDirty = true; }
+function saveGame(force = false) {
+  if (!force && !_saveDirty) return;
+  _saveDirty = false;
   const data = { player, state, upgradeOwned };
   const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
   localStorage.setItem('byu_legend_save', encoded);
-  showFloatText('Game Saved! 💾', window.innerWidth / 2, 100, false);
+  if (force) showFloatText('Game Saved! 💾', window.innerWidth / 2, 100, false);
 }
 function loadGame() {
   try {
@@ -1247,7 +1260,7 @@ function updateHUD() {
 
 // ==================== XP / LEVEL SYSTEM ====================
 function getXPThreshold(level) {
-  return Math.floor(100 * Math.pow(1.35, level - 1));
+  return Math.floor(BASE_XP_THRESHOLD * Math.pow(XP_GROWTH_RATE, level - 1));
 }
 function getCurrentLevel() {
   let level = 1;
@@ -1661,6 +1674,7 @@ jerseyCanvas.addEventListener('click', (e) => {
   player.cougarPoints += cp;
   player.lifetimeCP += cp;
   player.totalClicks++;
+  markDirty();
   checkAchievements();
   updateHUD();
   renderUpgrades();
@@ -1720,6 +1734,7 @@ function buyUpgrade(upgrade) {
   upgrade.effect(player);
   player.inventory.push(upgrade.id + '_' + (owned + 1));
   player.totalUpgradesBought++;
+  markDirty();
   playTone(660, 'sine', 0.2, 0.3);
   showFloatText(`${upgrade.name} purchased!`, window.innerWidth / 2, 200, false);
   checkAchievements();
@@ -2303,7 +2318,7 @@ function gameLoop(timestamp) {
   // Track time played
   player.timePlayed = (player.timePlayed || 0) + dt / 1000;
 
-  // CPS income
+  // CPS income also marks dirty
   cpsAccum += dt / 1000;
   if (cpsAccum >= 0.1) {
     const effectiveCPS = player.cps * (player.autoFarmMult || 1) * player.blueBloodMultiplier * player.legacyMultiplier;
@@ -2311,6 +2326,7 @@ function gameLoop(timestamp) {
     if (income > 0) {
       player.cougarPoints += income;
       player.lifetimeCP += income;
+      markDirty();
       checkAchievements();
     }
     cpsAccum = 0;
@@ -2338,9 +2354,9 @@ function gameLoop(timestamp) {
 
 // ==================== PRESTIGE SYSTEM ====================
 function doPrestige() {
-  const needed = 50000;
+  const needed = PRESTIGE_CP_REQUIREMENT;
   if (player.lifetimeCP < needed) {
-    showFloatText('Need 50,000 lifetime CP!', window.innerWidth / 2, 200, false);
+    showFloatText(`Need ${fmtNum(needed)} lifetime CP!`, window.innerWidth / 2, 200, false);
     return;
   }
   if (!confirm(`Prestige ${player.prestigeCount + 1}: Reset progress and gain a Legacy Multiplier boost + Legacy Shards?`)) return;
@@ -2380,11 +2396,11 @@ function doPrestige() {
   setTimeout(() => playTone(1100, 'sine', 0.5, 0.4), 200);
   checkAchievements();
   renderAll();
-  saveGame();
+  saveGame(true);
 }
 
 function renderPrestige() {
-  const needed = 50000;
+  const needed = PRESTIGE_CP_REQUIREMENT;
   const pct = Math.min(100, (player.lifetimeCP / needed) * 100);
   const canPrestige = player.lifetimeCP >= needed;
 
@@ -2471,6 +2487,7 @@ function buySkill(branchKey, skillId) {
   if (!player.skillsUnlocked) player.skillsUnlocked = [];
   player.skillsUnlocked.push(skillId);
   skill.effect(player);
+  markDirty();
   playTone(660, 'sine', 0.3, 0.3);
   setTimeout(() => playTone(880, 'sine', 0.2, 0.3), 150);
   showFloatText(`${skill.name} unlocked!`, window.innerWidth / 2, 200, true);
@@ -2544,8 +2561,8 @@ let eventTimer = 0;
 function tickEventTimer(dt) {
   if (eventActive) return;
   eventTimer += dt;
-  const freq = 120 - (player.eventFreqBonus || 0) * 60;
-  const threshold = Math.max(30, freq) * 1000;
+  const freqReduction = Math.min(EVENT_FREQ_REDUCTION_SEC, (player.eventFreqBonus || 0) * EVENT_FREQ_REDUCTION_SEC);
+  const threshold = Math.max(MIN_EVENT_INTERVAL_SEC, BASE_EVENT_INTERVAL_SEC - freqReduction) * 1000;
   if (eventTimer >= threshold) {
     eventTimer = 0;
     if (Math.random() < 0.4) triggerRandomEvent();
@@ -2561,10 +2578,10 @@ function closeDailyModal() {
   document.getElementById('daily-modal').classList.remove('active');
 }
 function renderDailyModal() {
-  const today = new Date().toDateString();
+  const todayUTC = new Date().toISOString().slice(0, 10);
   const lastDate = player.lastDailyDate;
   const streak = player.dailyStreak || 0;
-  const alreadyClaimed = lastDate === today;
+  const alreadyClaimed = lastDate === todayUTC;
   const streakDay = ((streak - 1) % 7) + 1;
   const nextDay = (streak % 7) + 1;
 
@@ -2595,14 +2612,18 @@ function renderDailyModal() {
 }
 
 function claimDailyReward() {
-  const today = new Date().toDateString();
-  if (player.lastDailyDate === today) return;
+  const todayUTC = new Date().toISOString().slice(0, 10); // YYYY-MM-DD in UTC
+  if (player.lastDailyDate === todayUTC) return;
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const isConsecutive = player.lastDailyDate === yesterday.toDateString();
+  let isConsecutive = false;
+  if (player.lastDailyDate) {
+    const last = new Date(player.lastDailyDate + 'T00:00:00Z');
+    const today = new Date(todayUTC + 'T00:00:00Z');
+    const diffDays = Math.round((today - last) / 86400000);
+    isConsecutive = diffDays === 1;
+  }
   player.dailyStreak = isConsecutive ? (player.dailyStreak || 0) + 1 : 1;
-  player.lastDailyDate = today;
+  player.lastDailyDate = todayUTC;
 
   const dayIdx = ((player.dailyStreak - 1) % 7);
   const reward = DAILY_REWARDS[dayIdx];
@@ -2718,8 +2739,8 @@ loadGame();
 renderAll();
 requestAnimationFrame((ts) => { lastTime = ts; gameLoop(ts); });
 
-// Auto-save every 5 seconds
-setInterval(saveGame, 5000);
+// Auto-save every 5 seconds (only when dirty)
+setInterval(saveGame, AUTOSAVE_INTERVAL_MS);
 
 // Periodic achievement check
 setInterval(checkAchievements, 2000);
